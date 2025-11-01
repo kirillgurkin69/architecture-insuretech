@@ -1,0 +1,34 @@
+scalar Date
+
+type Client {
+  id: ID!
+  name: String
+  age: Int
+  # Ленивая подгрузка связанных данных (каждый резолвер ходит в соответствующий REST)
+  documents(limit: Int, type: String): [Document!]!
+  relatives(limit: Int, relationType: String): [Relative!]!
+}
+
+type Document {
+  id: ID!
+  type: String!
+  number: String
+  issueDate: Date
+  expiryDate: Date
+}
+
+type Relative {
+  id: ID!
+  relationType: String!
+  name: String!
+  age: Int
+}
+
+type Query {
+  # Эквивалент GET /clients/{id}
+  client(id: ID!): Client
+
+  # Плоские выборки — эквиваленты REST-эндпоинтов, если нужны отдельно
+  clientDocuments(id: ID!, limit: Int, type: String): [Document!]!
+  clientRelatives(id: ID!, limit: Int, relationType: String): [Relative!]!
+}
