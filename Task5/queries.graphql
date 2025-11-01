@@ -1,0 +1,9 @@
+query ClientSnapshot($id: ID!) {
+  client(id: $id) {
+    id
+    name
+    # только нужные части карточки:
+    documents(type: "passport") { id number expiryDate }
+    relatives(relationType: "spouse") { name age }
+  }
+}
